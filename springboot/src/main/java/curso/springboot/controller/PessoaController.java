@@ -25,9 +25,14 @@ public class PessoaController {
 	/*--------Metodo salvar e voltar na mesma tela------------*/
 
 	@RequestMapping(method = RequestMethod.POST, value = "/salvarpessoa")
-	public String salvar(Pessoa pessoa) {
+	public ModelAndView salvar(Pessoa pessoa) {
 		pessoaRepository.save(pessoa);
-		return "cadastro/cadastropessoa";
+		/*Depois que salvar vai mostrar a lista de pessoas salva*/
+		ModelAndView andview = new ModelAndView("cadastro/cadastropessoa");/* Instanciar o objeto */
+		Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(); /* Carregar do banco de dados a minha lista */
+		andview.addObject("pessoas", pessoasIterable);/* Adicionar a lista */
+		
+		return andview;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/listapessoas")
