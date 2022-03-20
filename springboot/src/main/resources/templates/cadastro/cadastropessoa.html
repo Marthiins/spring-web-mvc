@@ -5,16 +5,21 @@
 <title>Insert title here</title>
 </head>
 <body>
-<!-- A ação salvar pessoa é a url do controller -->
-<form action="salvarpessoa" method="post">
-<label>Nome</label>
-<input name = "nome">
-<label>sobrenome</label>
-<input name = "sobrenome">
-<label>Idade</label>
-<input name = "idade">
-<input type="submit" value="salvar">
-</form>
+	<!-- A ação salvar pessoa é a url do controller -->
+	<form action="salvarpessoa" method="post">
+		<label>Nome</label> <input name="nome"> <label>sobrenome</label>
+		<input name="sobrenome"> <label>Idade</label> <input
+			name="idade"> <input type="submit" value="salvar">
+	</form>
 
+	<table>
+		<tr th:each="pessoa : ${pessoas}">
+			<td th:text="${pessoa.id}"></td>
+			<td th:text="${pessoa.nome}"></td>
+			<td th:text="${pessoa.sobrenome}"></td>
+		</tr>
+
+
+	</table>
 </body>
 </html>
