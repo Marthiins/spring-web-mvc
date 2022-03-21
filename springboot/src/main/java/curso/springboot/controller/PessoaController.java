@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import curso.springboot.model.Pessoa;
@@ -21,19 +23,19 @@ public class PessoaController {
 
 	/*--------Inicio da Tela------------*/
 
-	@RequestMapping(method = RequestMethod.GET, value="/cadastropessoa")
+	@RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
 	public ModelAndView inicio() {
 		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");
-		andView.addObject("pessoaobj", new Pessoa());/*Criar um objeto vazio */
+		andView.addObject("pessoaobj", new Pessoa());/* Criar um objeto vazio */
 		return andView;
 	}
 
 	/*--------Metodo salvar e voltar na mesma tela------------*/
 
-	@RequestMapping(method=RequestMethod.POST, value="**/salvarpessoa")
+	@RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
 	public ModelAndView Salvar(Pessoa pessoa) {
 		pessoaRepository.save(pessoa);
-		
+
 		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");
 		Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
 		andView.addObject("pessoas", pessoasIt);
@@ -42,13 +44,13 @@ public class PessoaController {
 	}
 
 	/*--------Metodo Listar------------*/
-	
-	@RequestMapping(method = RequestMethod.GET, value="/listapessoas")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/listapessoas")
 	public ModelAndView pessoas() {
 		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");/* Instanciar o objeto */
 		Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(); /* Carregar do banco de dados a minha lista */
 		andView.addObject("pessoas", pessoasIterable);/* Adicionar a lista */
-		andView.addObject("pessoaobj", new Pessoa());/*Criar um objeto vazio */
+		andView.addObject("pessoaobj", new Pessoa());/* Criar um objeto vazio */
 		return andView;
 	}
 	/*--------Metodo Editar------------*/
@@ -62,7 +64,7 @@ public class PessoaController {
 		andView.addObject("pessoaobj", pessoa.get());/* Adicionar pessoa ao modelo */
 		return andView; /* Injetar os dados na tela */
 	}
-	
+
 	/*--------Metodo Remover------------*/
 
 	@GetMapping("/removerpessoa/{idpessoa}")
@@ -70,10 +72,20 @@ public class PessoaController {
 
 		pessoaRepository.deleteById(idpessoa);/* Deletar */
 
-		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");/*Vai voltar a tela para o cadastro*/
-		andView.addObject("pessoas", pessoaRepository.findAll());/* Carregar todas as pessoas depois de carregar a tela */
-		andView.addObject("pessoaobj", new Pessoa()); /*Retornar um objeto vazio*/
-		
+		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");/* Vai voltar a tela para o cadastro */
+		andView.addObject("pessoas",pessoaRepository.findAll());/* Carregar todas as pessoas depois de carregar a tela */
+		andView.addObject("pessoaobj", new Pessoa()); /* Retornar um objeto vazio */
+
 		return andView; /* Injetar os dados na tela */
+	}
+	/*--------Metodo Remover------------*/
+
+	@PostMapping("**/pesquisarpessoa")
+	public ModelAndView pesquisarPorNome(@RequestParam("nomepesquisa") String nomepesquisa) {
+		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");/* Inicia o modelAnview e volta para a mesma tela de cadastro */
+		andView.addObject("pessoas", pessoaRepository.findPessoaByName(nomepesquisa));/* Adicionar o objeto pessoa */
+		andView.addObject("pessoaobj", new Pessoa());
+		return andView;
+
 	}
 }
