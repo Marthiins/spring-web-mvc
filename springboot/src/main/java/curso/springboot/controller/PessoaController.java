@@ -27,6 +27,8 @@ public class PessoaController {
 	public ModelAndView inicio() {
 		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");
 		andView.addObject("pessoaobj", new Pessoa());/* Criar um objeto vazio */
+		Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();/*Carregar as pessoas cadastradas*/
+		andView.addObject("pessoas", pessoasIt);
 		return andView;
 	}
 
@@ -87,5 +89,17 @@ public class PessoaController {
 		andView.addObject("pessoaobj", new Pessoa());
 		return andView;
 
+	}
+	
+	/*--------Metodo Editar Telefone------------*/
+
+	@GetMapping("/telefones/{idpessoa}")
+	public ModelAndView telefones(@PathVariable("idpessoa") Long idpessoa) {
+
+		Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);/* Retornar passando o objeto pessoa */
+
+		ModelAndView andView = new ModelAndView("cadastro/telefones");
+		andView.addObject("pessoaobj", pessoa.get());/* Adicionar pessoa ao modelo */
+		return andView; /* Injetar os dados na tela */
 	}
 }

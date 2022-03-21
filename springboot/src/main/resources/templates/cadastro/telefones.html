@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w2.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>JdevTreinamento</title>
+
+<!--Import Google Icon Font-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.css" media="screen,projection">
+<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.min.css" media="screen,projection">
+
+<style type="text/css">
+table.striped>tbody>tr:nth-child(odd) {
+	background-color: rgba(158, 154, 154, 0.5);
+}
+
+form input[type=submit] {
+	color: white;
+}
+</style>
+</head>
+<body>
+
+	<h3>Spring boot + Thymeleaf + Materia Design Lite</h3>
+	<br />
+	<h5>Cadastro de Pessoas</h5>
+	<a class="waves-effect waves-light btn" href="/cadastropessoa">Cadastro pessoa</a>
+	<div th:each="p:${pessoaobj}">
+		<!-- each interagir com o objeto -->
+		<div class="row">
+			<p>ID: <span th:text=${p.id}></span></p>
+			<p>Nome: <span th:text=${p.nome}></span></p>
+			<p>Sobrenome: <span th:text=${p.sobrenome}></span></p>
+			<p>Idade: <span th:text=${p.idade}></span></p>
+			<p>Profissao: <span th:text=${p.profissao}></span></p>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/materialize/js/materialize.js"></script>
+	<script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
+</body>
+</html>
