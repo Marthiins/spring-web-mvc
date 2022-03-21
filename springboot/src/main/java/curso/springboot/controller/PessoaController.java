@@ -45,11 +45,11 @@ public class PessoaController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/listapessoas")
 	public ModelAndView pessoas() {
-		ModelAndView andview = new ModelAndView("cadastro/cadastropessoa");/* Instanciar o objeto */
+		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");/* Instanciar o objeto */
 		Iterable<Pessoa> pessoasIterable = pessoaRepository.findAll(); /* Carregar do banco de dados a minha lista */
-		andview.addObject("pessoas", pessoasIterable);/* Adicionar a lista */
-		andview.addObject("pessoaobj", new Pessoa());/*Criar um objeto vazio */
-		return andview;
+		andView.addObject("pessoas", pessoasIterable);/* Adicionar a lista */
+		andView.addObject("pessoaobj", new Pessoa());/*Criar um objeto vazio */
+		return andView;
 	}
 	/*--------Metodo Editar------------*/
 
@@ -60,6 +60,20 @@ public class PessoaController {
 
 		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");
 		andView.addObject("pessoaobj", pessoa.get());/* Adicionar pessoa ao modelo */
+		return andView; /* Injetar os dados na tela */
+	}
+	
+	/*--------Metodo Remover------------*/
+
+	@GetMapping("/removerpessoa/{idpessoa}")
+	public ModelAndView excluir(@PathVariable("idpessoa") Long idpessoa) {
+
+		pessoaRepository.deleteById(idpessoa);/* Deletar */
+
+		ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");/*Vai voltar a tela para o cadastro*/
+		andView.addObject("pessoas", pessoaRepository.findAll());/* Carregar todas as pessoas depois de carregar a tela */
+		andView.addObject("pessoaobj", new Pessoa()); /*Retornar um objeto vazio*/
+		
 		return andView; /* Injetar os dados na tela */
 	}
 }
